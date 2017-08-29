@@ -72,11 +72,11 @@
 				</div>
 				<div class="row">
 					<div class="input-field">
-						<b>Prohibited characters in chat room name:</b>
-						<br>
-						comma (,), slash (/), backslash (\), period (.), asterisk (*), colon (:)
-						<br><br>
 						<input type="text" name="channel" id="channel" placeholder="Chat Room Name">
+						<br>
+						<b>*Prohibited characters in chat room name:</b>
+						<br>
+						comma ( , ), slash ( / ), backslash ( \ ), period ( . ), asterisk ( * ), colon ( : )
 					</div>
 				</div>
 				<button class="btn waves-effect waves-light purple darken-3" type="submit" name="action">

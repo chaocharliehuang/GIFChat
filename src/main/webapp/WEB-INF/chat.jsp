@@ -65,13 +65,15 @@
 				<div class="col s12 m6 window_height" id="chat_side">
 					
 					<div id="chatroom"></div>
-					
-					<!-- <h4>Current users:</h4>
-					<div id="users"></div> -->
 				
 				</div>
 				
 				<div class="col s12 m6 window_height" id="search_side">
+					
+					<h5>Current users in the chat room:</h5>
+					<ul>
+						<div id="users"></div>
+					</ul>
 					
 					<div id="selected_img"></div>
 					
@@ -153,7 +155,13 @@
 			var pubnub = new PubNub({
 				subscribeKey: "sub-c-9b8b3bdc-8c2d-11e7-9aaf-aec3d745d57e",
 				publishKey: "pub-c-12c52814-fa4c-4c05-b728-0cb150c0c825",
-				uuid: '${name}'
+				uuid: '${name}',
+				presenceTimeout: 5
+			});
+			
+			pubnub.subscribe({
+				channels: ['${channel}'],
+				withPresence: true
 			});
 			
 			pubnub.addListener({
@@ -162,25 +170,23 @@
 					if (m.message.author === '${name}') {
 						gifMessageHTML += '<div class="right_align">'
 					}
-					gifMessageHTML += '<p>' + m.message.author + ' says:</p>';
+					gifMessageHTML += '<p>' + m.message.author + ':</p>';
 					gifMessageHTML += '<img src=' + m.message.message + '></div>';
 					$("#chatroom").append(gifMessageHTML);
 					$('#chat_side').scrollTop($('#chat_side')[0].scrollHeight);
 				},
 				presence: function(p) {
-					console.log(p);
-					$("#users").append(p.uuids);
+					pubnub.hereNow({
+						channels: ['${channel}'],
+						includeUUIDs: true
+					}, function(status, response) {
+						var users = response.channels['${channel}'].occupants;
+						$("#users").html('');
+						for (var i = 0; i < users.length; i++) {
+							$("#users").append("<li>" + users[i].uuid + "</li>");
+						}
+					});
 				}
-			});
-			
-			pubnub.subscribe({
-				channels: ['${channel}'],
-				withPresence: true
-			});
-			
-			pubnub.hereNow({
-				channels: ['${channel}'],
-				includeUUIDs: true
 			});
 			
 			$("#form_send").submit(function(e) {
