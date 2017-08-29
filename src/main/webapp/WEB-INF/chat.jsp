@@ -18,13 +18,24 @@
 			text-align: right;
 		}
 		
-		#form_send {
+		#form_send, #selected_img {
 			display: none;
 		}
 		
+		.input-field input:focus {
+		    border-bottom: 1px solid #6a1b9a !important;
+		    box-shadow: 0 1px 0 0 #6a1b9a !important;
+		}
+		
+		.input-field input.valid {
+		    border-bottom: 1px solid #6a1b9a !important;
+		    box-shadow: 0 1px 0 0 #6a1b9a !important;
+		}
+		
+		
 		.clicked {
-			outline: 5px solid red;
-			outline-offset: -5px;
+			outline: 10px solid #6a1b9a;
+			outline-offset: -10px;
 		}
 	</style>
 </head>
@@ -32,13 +43,15 @@
 
 	<div class="navbar-fixed">
 		<nav>
-			<div class="nav-wrapper">
+			<div class="nav-wrapper purple darken-3">
 				<ul class="left">
-					<li>&emsp;Howdy, ${name}!</li>
+					<li>&emsp;Current chat room name: <b><u>${channel}</u></b></li>
 				</ul>
-				<h4 class="brand-logo center">GIF CHAT</h4>
+				<a class="brand-logo center">
+					<i class="material-icons">chat_bubble_outline</i>GIF CHAT<i class="material-icons right">chat_bubble_outline</i>
+				</a>
 				<ul class="right">
-					<li>Current chat room name: <b><u>${channel}</u></b>&emsp;</li>
+					<li><a href="/" target="_blank">Join a different chat room</a>&emsp;</li>
 				</ul>
 			</div>
 		</nav>
@@ -59,20 +72,28 @@
 				
 				</div>
 				
-				<div class="col s12 m6 window_height">
+				<div class="col s12 m6 window_height" id="search_side">
 					
 					<div id="selected_img"></div>
 					
 					<form id="form_send">
 						<input type="hidden" name="message" id="message">
-						<button class="btn waves-effect waves-light" type="submit">Send GIF</button>
+						<button class="btn waves-effect waves-light purple darken-3" type="submit" name="action">Send GIF
+							<i class="material-icons left">send</i>
+						</button>
 					</form>
 					
 					<h5>Search for GIFs:</h5>
 					<form id="form_search">
-						<input type="text" name="search" id="search">
-						<button class="btn waves-effect waves-light" type="submit">Search</button>
-						<button class="btn waves-effect waves-light" id="clear_search">Clear Search</button>
+						<div class="input-field">
+							<input type="text" name="search" id="search" placeholder="keywords" class="validate">
+						</div>
+						<button class="btn waves-effect waves-light purple darken-3" type="submit" name="action">Search
+							<i class="material-icons left">search</i>
+						</button>
+						<button class="btn waves-effect waves-light purple darken-3 right" id="clear_search" name="action">Clear Search
+							<i class="material-icons left">clear</i>
+						</button>
 					</form>
 					
 					<div id="gifs_search"></div>
@@ -91,17 +112,19 @@
 	<script>
 		$("#form_search").submit(function(e) {
 			e.preventDefault();
-			$.ajax({
-				url: "http://api.giphy.com/v1/gifs/search?q=" + $("#search").val() + "&api_key=2bc7e94dc18843f6962c623373074584",
-				method: "GET",
-				success: function(res) {
-					$("#gifs_search").append('<h5>Search results (click to select):</h5>');
-					for (var i = 0; i < res.data.length; i++) {
-						var gifHTML = '<img src=' + res.data[i].images.fixed_width.url + ' id=' + i + '>';
-						$("#gifs_search").append(gifHTML);
+			if ($("#search").val() !== '') {
+				$.ajax({
+					url: "http://api.giphy.com/v1/gifs/search?q=" + $("#search").val() + "&api_key=2bc7e94dc18843f6962c623373074584",
+					method: "GET",
+					success: function(res) {
+						$("#gifs_search").html('<h5>Search results (click to select):</h5>');
+						for (var i = 0; i < res.data.length; i++) {
+							var gifHTML = '<img src=' + res.data[i].images.fixed_width.url + ' id=' + i + '>';
+							$("#gifs_search").append(gifHTML);
+						}
 					}
-				}
-			})
+				});
+			}
 		});
 		
 		$(document).on("click", "#gifs_search img", function(e) {
@@ -111,8 +134,11 @@
 			});
 			$(clickedImg).addClass("clicked");
 			$("#message").val($(clickedImg).attr("src"));
+			$("#selected_img").hide();
 			$("#selected_img").html("<h5>Selected GIF:</h5><img src=" + $(clickedImg).attr("src") +"><br><br>");
-			$("#form_send").show();
+			$("#selected_img").fadeIn("slow");
+			$("#form_send").fadeIn("slow");
+			$("#search_side").animate({scrollTop: 0}, 'slow');
 		});
 		
 		$("#clear_search").click(function(e) {

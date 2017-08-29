@@ -1,5 +1,7 @@
 package com.chaocharliehuang.gifchat.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
@@ -18,10 +20,17 @@ public class GifChat {
 	}
 	
 	@PostMapping("/chat")
-	public String chat(
-			@RequestParam("name") String name, @RequestParam("channel") String channel, Model model) {
-		model.addAttribute("name", name);
-		model.addAttribute("channel", channel);
+	public String setupChat(
+			@RequestParam("name") String name, @RequestParam("channel") String channel, HttpSession session) {
+		session.setAttribute("name", name);
+		session.setAttribute("channel", channel);
+		return "redirect:/chat";
+	}
+	
+	@GetMapping("/chat")
+	public String chat(HttpSession session, Model model) {
+		model.addAttribute("name", session.getAttribute("name"));
+		model.addAttribute("channel", session.getAttribute("channel"));
 		return "chat.jsp";
 	}
 	
