@@ -5,7 +5,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>Gif Chat</title>
+	<title>GIF Chat Room: ${channel}</title>
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
 	<style>
@@ -31,7 +31,6 @@
 		    border-bottom: 1px solid #6a1b9a !important;
 		    box-shadow: 0 1px 0 0 #6a1b9a !important;
 		}
-		
 		
 		.clicked {
 			outline: 10px solid #6a1b9a;
