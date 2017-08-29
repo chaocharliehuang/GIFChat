@@ -7,21 +7,33 @@ import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class GifChat {
 
 	@GetMapping("/")
-	public String index() {
+	public String index(@ModelAttribute("errors") String errors, Model model) {
+		model.addAttribute("errors", errors);
 		return "index.jsp";
 	}
 	
 	@PostMapping("/chat")
 	public String setupChat(
-			@RequestParam("name") String name, @RequestParam("channel") String channel, HttpSession session) {
+			@RequestParam("name") String name, @RequestParam("channel") String channel, 
+			RedirectAttributes redirectAttributes, HttpSession session) {
+		if (name.length() == 0 || channel.length() == 0) {
+			redirectAttributes.addFlashAttribute("errors", "Your name and/or chat room name cannot be blank!");
+			return "redirect:/";
+		} else if (channel.contains(",") || channel.contains("/") || channel.contains("\\") || 
+				channel.contains(".") || channel.contains("*") || channel.contains(":")) {
+			redirectAttributes.addFlashAttribute("errors", "Chat room name cannot contain a prohibited character!");
+			return "redirect:/";
+		}
 		session.setAttribute("name", name);
 		session.setAttribute("channel", channel);
 		return "redirect:/chat";

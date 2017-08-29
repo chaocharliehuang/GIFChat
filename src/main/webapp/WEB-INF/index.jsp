@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -58,6 +59,10 @@
 			<h5>Chat using only GIFs!</h5>
 			<p>Enter your name and a unique chat room name.</p>
 			<p>Share the chat room name with your friends and start chatting!</p>
+			
+			<c:if test="${!empty errors}">
+				<p style="color:red;"><b>${errors}</b></p>
+			</c:if>
 			
 			<form action="/chat" method="POST">
 				<div class="row">
