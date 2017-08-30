@@ -89,10 +89,11 @@
 						<div class="input-field">
 							<input type="text" name="search" id="search" placeholder="keywords" class="validate">
 						</div>
-						<button class="btn waves-effect waves-light purple darken-3" type="submit" name="action">Search
+						<button class="btn waves-effect waves-light purple darken-3 col m5" type="submit" name="action">Search
 							<i class="material-icons left">search</i>
 						</button>
-						<button class="btn waves-effect waves-light purple darken-3 right" id="clear_search" name="action">Clear Search
+						&emsp;
+						<button class="btn waves-effect waves-light purple darken-3 right col m5" id="clear_search" name="action">Clear Search
 							<i class="material-icons left">clear</i>
 						</button>
 					</form>
@@ -118,7 +119,7 @@
 					url: "http://api.giphy.com/v1/gifs/search?q=" + $("#search").val() + "&api_key=2bc7e94dc18843f6962c623373074584",
 					method: "GET",
 					success: function(res) {
-						$("#gifs_search").html('<h5>Search results (click to select):</h5>');
+						$("#gifs_search").html('<br><h5>Search results (click to select):</h5>');
 						for (var i = 0; i < res.data.length; i++) {
 							var gifHTML = '<img src=' + res.data[i].images.fixed_width.url + ' id=' + i + '>';
 							$("#gifs_search").append(gifHTML);
@@ -173,7 +174,9 @@
 					gifMessageHTML += '<p>' + m.message.author + ':</p>';
 					gifMessageHTML += '<img src=' + m.message.message + '></div>';
 					$("#chatroom").append(gifMessageHTML);
-					$('#chat_side').scrollTop($('#chat_side')[0].scrollHeight);
+					setTimeout(function() {
+						$('#chat_side').scrollTop($('#chat_side')[0].scrollHeight);
+					}, 500);
 				},
 				presence: function(p) {
 					pubnub.hereNow({
@@ -191,6 +194,8 @@
 			
 			$("#form_send").submit(function(e) {
 				e.preventDefault();
+				$("#selected_img").fadeOut();
+				$("#form_send").fadeOut();
 				pubnub.publish({
 					channel: '${channel}', 
 					message: {

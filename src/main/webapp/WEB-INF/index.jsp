@@ -90,7 +90,7 @@
 	
 	<footer class="page_footer purple darken-3">
 	    <div class="center">
-	        <p>&copy; 2017 <a href="http://github.com/chaocharliehuang" target="_blank">Chao Charlie Huang</a> | Built using Spring Boot, Materialize CSS, PubNub API, and GIPHY API</p>
+	        <p>&copy; 2017 <a href="http://github.com/chaocharliehuang" target="_blank">Chao Charlie Huang</a> | Built using Spring Boot, PubNub API, GIPHY API, and Materialize CSS</p>
 	    </div>
 	</footer>
 	
