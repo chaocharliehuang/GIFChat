@@ -18,6 +18,11 @@
 		main {
 		    flex: 1 0 auto;
 		}
+		
+		#giphy_slideshow {
+			width: 300px;
+			margin: 20px auto 0;
+		}
     
     		#name, #channel {
     			width: 50%;
@@ -55,7 +60,10 @@
 	<main>
 	
 		<div class="container center">
-
+			<div id="giphy_slideshow">
+				<div id="_giphy_tv"></div>
+			</div>
+			
 			<h5>Chat using only GIFs!</h5>
 			<p>Enter your name and a unique chat room name.</p>
 			<p>Share the chat room name with your friends and start chatting!</p>
@@ -93,6 +101,13 @@
 	        <p>&copy; 2017 <a href="http://github.com/chaocharliehuang" target="_blank">Chao Charlie Huang</a> | Built using Spring Boot, PubNub API, GIPHY API, and Materialize CSS</p>
 	    </div>
 	</footer>
+	
+	<script>
+	    var _giphy_tv_tag="welcome";
+	    var g = document.createElement('script'); g.type = 'text/javascript'; g.async = true;
+	    g.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'giphy.com/static/js/widgets/tv.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(g, s);
+	</script>
 	
 </body>
 </html>
